@@ -19,31 +19,31 @@ io.on('connection', (socket) => {
 
     console.log(`New user is connected`);
 
-    /* socket.on('createEmail', (newEmail) => {
-        console.log("Create email :", newEmail)
-    }); */
-
-    /*  socket.emit('newMessage', {
-         from: "Mg@GT.com",
-         text: "ty@ty.com",
-         createdAt: new Date().getTime()
-
-     }) */
-
-    /* socket.emit('newEmail', {
-        from: 'a@y.com',
-        text: "What's up",
-        createdAt: new Date().getTime()
-    }); */
 
     socket.on('createMessage', (message) => {
         console.log("Create Message :", message)
-        io.emit('newMessage', {
+        /* io.emit('newMessage', {
             from: message.from,
             text: message.text,
             createdAt: new Date().getTime()
-        })
+        }); */
+        socket.broadcast.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        });
+    });
 
+    socket.emit('newMessage', {
+        from: "Admin",
+        text: "Welcome in the chat app",
+        createdAt: new Date().getTime()
+
+    });
+    socket.broadcast.emit('newMessage', {
+        from: "Admin",
+        text: "New User Joined",
+        createdAt: new Date().getTime()
     });
 
     socket.on('disconnect', () => {
@@ -51,9 +51,11 @@ io.on('connection', (socket) => {
     });
 
 
+
+
 });
+
+
 server.listen(port, () => {
-    console.log(publicPath + '/index.html')
-
-
-})
+    console.log(publicPath + '/index.html');
+});
