@@ -6,13 +6,13 @@ socket.on('connect', function () {
     console.log("Socket is connected");
 
 
-    socket.emit('createMessage', {
+    /* socket.emit('createMessage', {
         from: "Frank",
         text: "Message Created"
 
     }, function (data) {
         console.log("Got it " + data);
-    });
+    }); */
 
 });
 
@@ -42,3 +42,31 @@ jQuery('#message-form').on('submit', function (e) {
         console.log("Message is send");
     });
 });
+
+var locationButton = jQuery('#send-location');
+locationButton.on('click', function () {
+
+    if (!navigator.geolocation) {
+        return alert("Your browser Doesn't support geolocation.");
+
+    }
+    navigator.geolocation.getCurrentPosition(function (position) {
+        socket.emit('createLocatioMessage', {
+            latitude: position.coords.latitude,
+            longnitude: position.coords.longitude
+        })
+        console.log("Position ::", Geoposition);
+    }, function () {
+        return alert('Unable to fetch location.');
+    })
+});
+
+socket.on('newLocationMessage', function (message) {
+    var li = jQuery('<li></li>'); //target=blank is used to open the url in new tab not on the existing tab
+    var a = jQuery('<a target="_blank">My Current Location</a>');
+    li.text(`${message.from}: `);
+    a.attr('href', message.url);
+    console.log('a is :', a);
+    li.append(a);
+    jQuery('#messages').append(li);
+})
