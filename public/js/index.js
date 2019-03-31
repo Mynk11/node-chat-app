@@ -20,12 +20,23 @@ socket.on('connect', function () {
 
 
 
-socket.on('newMessage', (data) => {
-    var formattedTime = moment(data.createdAt).format('h:mm a');
-    console.log("NewMessage", formattedTime);
-    var li = jQuery('<li></li>')
-    li.text(`${data.from} ${formattedTime} : ${data.text}`);
-    jQuery('#messages').append(li);
+socket.on('newMessage', (message) => {
+    var template = jQuery('#message-template').html();
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var html = Mustache.render(template, {
+        from: message.from,
+        text: message.text,
+        time: formattedTime,
+
+    });
+
+    jQuery('#messages').append(html);
+
+    // 
+    // console.log("NewMessage", formattedTime);
+    // var li = jQuery('<li></li>')
+    // li.text(`${data.from} ${formattedTime} : ${data.text}`);
+    // jQuery('#messages').append(li);
 });
 
 
@@ -68,12 +79,24 @@ locationButton.on('click', function () {
 });
 
 socket.on('newLocationMessage', function (message) {
+    //var formattedTime = moment(message.createdAt).format('h:mm a');
+    // var li = jQuery('<li></li>'); //target=blank is used to open the url in new tab not on the existing tab
+    // var a = jQuery('<a target="_blank">My Current Location</a>');
+    // li.text(`${message.from} ${formattedTime}: `);
+    // a.attr('href', message.url);
+    // console.log('a is :', a);
+    // li.append(a);
+    // jQuery('#messages').append(li);
+
+    var template = jQuery('#location-message-template').html();
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var li = jQuery('<li></li>'); //target=blank is used to open the url in new tab not on the existing tab
-    var a = jQuery('<a target="_blank">My Current Location</a>');
-    li.text(`${message.from} ${formattedTime}: `);
-    a.attr('href', message.url);
-    console.log('a is :', a);
-    li.append(a);
-    jQuery('#messages').append(li);
+    var html = Mustache.render(template, {
+        from: message.from,
+        text: message.url,
+        time: formattedTime,
+
+    });
+
+    jQuery('#messages').append(html);
+
 })
