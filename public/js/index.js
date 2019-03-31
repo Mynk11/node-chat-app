@@ -6,13 +6,13 @@ socket.on('connect', function () {
     console.log("Socket is connected");
 
 
-    /* socket.emit('createMessage', {
-        from: "Frank",
-        text: "Message Created"
+    // socket.emit('createMessage', {
+    //     from: "Frank",
+    //     text: "Message Created"
 
-    }, function (data) {
-        console.log("Got it " + data);
-    }); */
+    // }, function (data) {
+    //     console.log("Got it " + data);
+    // });
 
 });
 
