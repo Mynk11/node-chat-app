@@ -21,9 +21,10 @@ socket.on('connect', function () {
 
 
 socket.on('newMessage', (data) => {
-    console.log(data);
+    var formattedTime = moment(data.createdAt).format('h:mm a');
+    console.log("NewMessage", formattedTime);
     var li = jQuery('<li></li>')
-    li.text(`${data.from} : ${data.text}`);
+    li.text(`${data.from} ${formattedTime} : ${data.text}`);
     jQuery('#messages').append(li);
 });
 
@@ -57,7 +58,7 @@ locationButton.on('click', function () {
             latitude: position.coords.latitude,
             longnitude: position.coords.longitude
         })
-        console.log("Position ::", Geoposition);
+        //console.log("Position ::", Geoposition);
     }, function () {
         locationButton.removeAttr('disabled').text('Send location');
         return alert('Unable to fetch location.');
@@ -67,9 +68,10 @@ locationButton.on('click', function () {
 });
 
 socket.on('newLocationMessage', function (message) {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
     var li = jQuery('<li></li>'); //target=blank is used to open the url in new tab not on the existing tab
     var a = jQuery('<a target="_blank">My Current Location</a>');
-    li.text(`${message.from}: `);
+    li.text(`${message.from} ${formattedTime}: `);
     a.attr('href', message.url);
     console.log('a is :', a);
     li.append(a);
