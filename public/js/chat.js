@@ -4,17 +4,23 @@ var socket = io();
 //broadcasting event is use to share message with all user expect specific one
 socket.on('connect', function () {
     console.log("Socket is connected");
+    let param = jQuery.deparam(window.location.search);
+    socket.emit('join', param, function (err) {
 
-
-    // socket.emit('createMessage', {
-    //     from: "Frank",
-    //     text: "Message Created"
-
-    // }, function (data) {
-    //     console.log("Got it " + data);
-    // });
+        if (err) {
+            console.log(`Param is ${param} & Error is ${err}`);
+            alert(err);
+            window.location.href = "/";
+        } else {
+            console.log(`Param is ${param} & NO Error`);
+        }
+    });
 
 });
+
+
+
+
 function scrollToBottom() {
     // Selectors
     var messages = jQuery('#messages');
@@ -45,12 +51,7 @@ socket.on('newMessage', (message) => {
     });
 
     jQuery('#messages').append(html);
-    scrollToBottom();
-    // 
-    // console.log("NewMessage", formattedTime);
-    // var li = jQuery('<li></li>')
-    // li.text(`${data.from} ${formattedTime} : ${data.text}`);
-    // jQuery('#messages').append(li);
+    //scrollToBottom();
 });
 
 
@@ -93,14 +94,6 @@ locationButton.on('click', function () {
 });
 
 socket.on('newLocationMessage', function (message) {
-    //var formattedTime = moment(message.createdAt).format('h:mm a');
-    // var li = jQuery('<li></li>'); //target=blank is used to open the url in new tab not on the existing tab
-    // var a = jQuery('<a target="_blank">My Current Location</a>');
-    // li.text(`${message.from} ${formattedTime}: `);
-    // a.attr('href', message.url);
-    // console.log('a is :', a);
-    // li.append(a);
-    // jQuery('#messages').append(li);
 
     var template = jQuery('#location-message-template').html();
     var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -112,6 +105,6 @@ socket.on('newLocationMessage', function (message) {
     });
 
     jQuery('#messages').append(html);
-    scrollToBottom();
+    //scrollToBottom();
 
 })

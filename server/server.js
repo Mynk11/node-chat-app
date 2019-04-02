@@ -7,6 +7,7 @@ const {
     generateMessage,
     generateLocationMessage
 } = require('./utils/message');
+const { isString } = require('./utils/validation');
 const publicPath = path.join(__dirname + '/../public');
 var server = http.createServer(app);
 var port = process.env.PORT || 3000;
@@ -19,6 +20,18 @@ app.use(express.static(publicPath));
 
 
 io.on('connection', (socket) => {
+
+
+    socket.on('join', (params, callback) => {
+        if (!isString(params.name) || !isString(params.room)) {
+            callback("Name and Room are required.");
+        } else {
+            callback();
+        }
+
+    });
+
+
     console.log(`New user is connected`);
     /* io.emit('newMessage', {
                 from: message.from,
