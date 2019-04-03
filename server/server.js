@@ -26,9 +26,17 @@ io.on('connection', (socket) => {
         if (!isString(params.name) || !isString(params.room)) {
             callback("Name and Room are required.");
         } else {
+            socket.join(params.room);
+            socket.emit('newMessage', generateMessage("Admin", "Welcome to the chat app!!"));
+            socket.broadcast.to(params.room).emit('newMessage', generateMessage("Admin", `${params.name} has joined`));
             callback();
         }
 
+        //Targeting rooms
+        //socket.leave(params.name);
+        //io.emit=>to broadcast a message for all(io.to("emittfr").emit)
+        //socket.broadcast.emit=>except current user socket.broadcast.to("Office room").emit
+        //socket.emit =>for specific user socket.to("Mayank").emit
     });
 
 
@@ -44,8 +52,7 @@ io.on('connection', (socket) => {
         callback("This is from the server");
     });
 
-    socket.emit('newMessage', generateMessage("Admin", "Welcome to the chat app!!"));
-    socket.broadcast.emit('newMessage', generateMessage("Admin", "New User joined!!"));
+
 
     socket.on('disconnect', () => {
         console.log("User is disconnected from server");
