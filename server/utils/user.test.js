@@ -4,8 +4,9 @@ const { User } = require('../utils/users');
 
 
 describe("#Users", () => {
+    var user = new User();
     beforeEach(() => {
-        var user = new User();
+
         user.users = [{
             id: '1',
             name: 'Mike',
@@ -19,7 +20,7 @@ describe("#Users", () => {
             name: 'Jack',
             room: 'node',
         }];
-        console.log("Before Each", user);
+        //console.log("Before Each", user);
     })
     it("Should check for add users", () => {
         var user = new User();

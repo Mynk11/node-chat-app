@@ -18,7 +18,7 @@ class User {
     }
     getUserList(room) {
         //return a list of person in particular room
-        var users = this.users.filter((user) => user.room == this.room);
+        var users = this.users.filter((user) => { return user.room == room });
         var nameArray = users.map((user) => user.name);
         console.log("Name Array is:", nameArray);
         return nameArray;
