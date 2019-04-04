@@ -37,6 +37,13 @@ io.on('connection', (socket) => {
         //io.emit=>to broadcast a message for all(io.to("emittfr").emit)
         //socket.broadcast.emit=>except current user socket.broadcast.to("Office room").emit
         //socket.emit =>for specific user socket.to("Mayank").emit
+
+        socket.on('createMessage', (message, callback) => {
+            console.log("Create Message :", message)
+            socket.to(params.room).emit('newMessage', generateMessage(message.from, message.text));
+            callback("This is from the server");
+        });
+
     });
 
 
@@ -46,11 +53,7 @@ io.on('connection', (socket) => {
                 text: message.text,
                 createdAt: new Date().getTime()
             }); */
-    socket.on('createMessage', (message, callback) => {
-        console.log("Create Message :", message)
-        io.emit('newMessage', generateMessage(message.from, message.text));
-        callback("This is from the server");
-    });
+
 
 
 
