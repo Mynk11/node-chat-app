@@ -36,4 +36,16 @@ describe("#Users", () => {
         expect(name).toInclude(['Jack']);
 
     });
+
+    it("Should fetch user id", () => {
+        var id = user.getUser("Mike")
+        console.log("ID is ", id);
+        expect(id).toEqual('1');
+    })
+    it("Should remove an user", () => {
+        var id = user.removeUser("1")
+        console.log("ID is ", id);
+        expect(id[0].id).toEqual('1');
+    })
+
 })

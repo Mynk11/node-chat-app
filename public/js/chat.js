@@ -14,6 +14,8 @@ socket.on('connect', function () {
         } else {
             console.log(`Param is ${param} & NO Error`);
         }
+
+
     });
 
 });
@@ -81,6 +83,7 @@ locationButton.on('click', function () {
     navigator.geolocation.getCurrentPosition(function (position) {
         locationButton.removeAttr('disabled').text('Send location');
         socket.emit('createLocatioMessage', {
+            user: this.user,
             latitude: position.coords.latitude,
             longnitude: position.coords.longitude
         })
@@ -106,5 +109,16 @@ socket.on('newLocationMessage', function (message) {
 
     jQuery('#messages').append(html);
     //scrollToBottom();
+
+})
+
+socket.on('updateUserList', function (users) {
+    console.log(`Users list is:`, users);
+    var ol = jQuery('<ol></ol>');
+    users.forEach((user) => {
+        var li = jQuery('<li></li>').text(user)
+        ol.append(li);
+    });
+    jQuery('#users').append(ol);//or can use .html(ol)
 
 })
